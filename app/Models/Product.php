@@ -15,4 +15,9 @@ class Product extends Model
         'name',
         'description'
     ];
+
+    public function attributes()
+    {
+        return $this->hasMany(ProductAttribute::class);
+    }
 }

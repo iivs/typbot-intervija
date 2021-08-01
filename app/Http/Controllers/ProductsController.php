@@ -7,7 +7,6 @@ use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 /**
  * A class to create, read, update and delete products. If product does not exist, return error message following same
@@ -18,11 +17,11 @@ class ProductsController extends Controller
     /**
      * Display a list of products without attributes.
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return Product::all();
+        return response()->json(Product::all(), Response::HTTP_OK);
     }
 
     /**
@@ -30,7 +29,7 @@ class ProductsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -40,7 +39,7 @@ class ProductsController extends Controller
          * make sure it has "key" property. Attribute values are optional. Attribute keys must be distinct.
          */
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|unique:products',
+            'name' => 'required|string|unique:products,name',
             'description' => 'string|nullable',
             'attributes' => 'array|nullable',
             'attributes.*.key' => 'required_with:attributes|distinct',
@@ -80,7 +79,7 @@ class ProductsController extends Controller
             $product->attributes = $attributes;
         }
 
-        return $product;
+        return response()->json($product, Response::HTTP_CREATED);
     }
 
     /**
@@ -88,7 +87,7 @@ class ProductsController extends Controller
      *
      * @param  int  $id  Product ID.
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -106,7 +105,7 @@ class ProductsController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return $product;
+        return response()->json($product, Response::HTTP_OK);
     }
 
     /**
@@ -116,7 +115,7 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id Product ID.
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -152,7 +151,7 @@ class ProductsController extends Controller
         // First check if product name is given.
         if ($name !== null) {
             // Then check if the name given is for the same product. If it is, allow to update it.
-            if (trim(Str::lower($product->name)) !== trim(Str::lower($name))) {
+            if (trim(strtolower($product->name)) !== trim(strtolower($name))) {
                 // If name is for different product, check if name already exists. Products are case insensitive.
                 $product_exists = Product::where('name', $name)->first();
 
@@ -193,7 +192,7 @@ class ProductsController extends Controller
         }
         // If attributes are null, do not delete them.
 
-        return $product;
+        return response()->json($product, Response::HTTP_OK);
     }
 
     /**
@@ -201,7 +200,7 @@ class ProductsController extends Controller
      *
      * @param  int  $id  Product ID.
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
@@ -233,7 +232,7 @@ class ProductsController extends Controller
      *
      * @param int $id  Product ID.
      *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return Illuminate\Http\JsonResponse
      */
     public function attributes($id) {
         $product = Product::find($id);
@@ -250,6 +249,6 @@ class ProductsController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return $product->attributes;
+        return response()->json($product->attributes, Response::HTTP_OK);
     }
 }

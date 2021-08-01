@@ -237,6 +237,15 @@ request to http://localhost:8000/api/products/{id}/attributes where `{id}` is an
 - if product is found and deleted, you will receive a success message.
 
 #
+## Generating test data
+To generate products, attributes and users, you may use the database seeder:
+```
+php artisan db:seed --class=DatabaseSeeder
+```
+This will generate fake products, attributes and users. The users will have constant password "password". This will not
+generate tokens and log them it. You can log in aftearwards using an e-mail that was generated and password "password".
+
+#
 ## What is not included or could be improved.
 - Missing custom message for `attributes.*.key`.
 - since project is missing `updated_at` column for attribues, there is no reason to create a separate method to update

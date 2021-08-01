@@ -20,16 +20,9 @@ class ProductsTableSeeder extends Seeder
         Product::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $faker = \Faker\Factory::create();
-
         // Create a few products.
-        foreach (range(1, 10) as $i) {
-            Product::create([
-                // Create a random product name ranging from 5 to 50 symbols.
-                'name' => $faker->text(rand(5, 50)),
-                // Description is optional. So it is 50% chance for one to have a description
-                'description' => $faker->boolean(50) ? $faker->sentence : null
-            ]);
-        }
+        Product::factory()
+            ->count(10)
+            ->create();
     }
 }

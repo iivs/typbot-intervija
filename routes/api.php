@@ -17,27 +17,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes.
-// Route::resource('products', ProductsController::class);
 Route::get('/products', [ProductsController::class, 'index']);
 Route::get('/products/{id}', [ProductsController::class, 'show']);
 Route::get('/products/{id}/attributes', [ProductsController::class, 'attributes']);
-
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 
 // Protected routes.
 Route::group(['middleware' => ['auth:sanctum']], function() {
-// Route::group(['middleware' => ['auth:api']], function() {
     Route::post('/products', [ProductsController::class, 'store']);
     Route::put('/products/{id}', [ProductsController::class, 'update']);
     Route::delete('/products/{id}', [ProductsController::class, 'destroy']);
-
     Route::post('/logout', [AuthController::class, 'logout']);
 });
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-

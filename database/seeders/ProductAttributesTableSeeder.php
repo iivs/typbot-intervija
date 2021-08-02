@@ -37,10 +37,6 @@ class ProductAttributesTableSeeder extends Seeder
 
                     for ($i = 0; $i <= $attr_count; $i++) {
                         $attributes[] = ProductAttribute::factory()->definition() + 
-                            //'key' => $faker->word,
-                            // Product attribute has a 50% chance to have a value for its key.
-                            //'value' => $faker->boolean(50) ? $faker->text(rand(5, 10)) : null,
-                            // Set the same creation date as product.
                            ['created_at' => $product->created_at 
                         ];
                     }

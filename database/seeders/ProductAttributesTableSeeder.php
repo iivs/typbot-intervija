@@ -37,8 +37,7 @@ class ProductAttributesTableSeeder extends Seeder
 
                     for ($i = 0; $i <= $attr_count; $i++) {
                         $attributes[] = ProductAttribute::factory()->definition() + 
-                           ['created_at' => $product->created_at 
-                        ];
+                           ['created_at' => $product->created_at];
                     }
 
                     // Save product attributes.

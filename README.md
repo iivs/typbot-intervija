@@ -240,14 +240,27 @@ request to http://localhost:8000/api/products/{id}/attributes where `{id}` is an
 ## Generating test data
 To generate products, attributes and users, you may use the database seeder:
 ```
-php artisan db:seed --class=DatabaseSeeder
+php artisan db:seed
 ```
 This will generate fake products, attributes and users. The users will have constant password "password". This will not
 generate tokens and log them it. You can log in aftearwards using an e-mail that was generated and password "password".
 
+To test the methods of API, you can also use feature tests:
+```
+php artisan test
+```
+They might, however, rewrite the existing data on database and then recreate another one with test data in them.
+
 #
 ## What is not included or could be improved.
-- Missing custom message for `attributes.*.key`.
+- Any authenticated user can edit products. They do not belong to certain user;
+- missing custom message for `attributes.*.key`;
 - since project is missing `updated_at` column for attribues, there is no reason to create a separate method to update
-specific attributes, since we will not know when or if they were updated;
-- date format in not user friendly and can be improved in responses.
+  specific attributes, since we will not know when or if they were updated;
+- date format in not user friendly and can be improved in responses;
+- product attributes seeder is iffy;
+- Auth tests are a bit messy. For example each test refreshes database, which is rather insane;
+- Missing product tests. Product attributes may return a value field or not, so dynamic input and output structure is
+  not possible to assert. Need to resolve on static structures. Also PUT methods didn not work correctly. For example,
+  create a user, create a product, log out, try to update a product, but test returned success, but testing manually by
+  hand reponse is 401 Unauthorized. This resulted in scrapping product tests completely since they depend on auth.

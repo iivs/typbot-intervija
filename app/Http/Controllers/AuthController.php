@@ -29,7 +29,7 @@ class AuthController extends Controller
             'email.required' => 'Missing email.',
             'email.unique' => 'User with this e-mail already exists.',
             'password.required' => 'Missing password.',
-            'password.confirmed' => 'Passwords do not match'
+            'password.confirmed' => 'Passwords do not match.'
         ]);
 
         if ($validator->fails()) {
@@ -47,7 +47,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->input('password'))
         ]);
 
-        $token = $user->createToken('typbot-intervija-token')->plainTextToken;
+        $token = $user->createToken('accessToken')->plainTextToken;
 
         return response()->json([
             'user' => $user,
@@ -95,7 +95,7 @@ class AuthController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $token = $user->createToken('typbot-intervija-token')->plainTextToken;
+        $token = $user->createToken('accessToken')->plainTextToken;
 
         return response()->json([
             'user' => $user,
@@ -113,7 +113,7 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
 
         return response()->json([
-            'message' => 'Logged out',
+            'message' => 'Logged out.',
         ], Response::HTTP_OK);
     }
 }
